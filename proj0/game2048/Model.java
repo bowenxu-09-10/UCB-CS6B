@@ -94,6 +94,46 @@ public class Model extends Observable {
         setChanged();
     }
 
+    /** Check the toppest row of given col that can move */
+    private boolean checkTopTile(int col, int topRow, int row, Board board) {
+        if (board.tile(col, row) != null) {
+            if (board.tile(col, topRow) == null) {
+                return true;
+            } else if (board.tile(col, topRow).value() == board.tile(col, row).value()) {
+                score += 2 * board.tile(col, row).value();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Move tile upward for a given column. */
+    private boolean upWard(Board board, int col, int topRow) {
+        boolean changed = false;
+        // From top second row down
+        for (int r = topRow - 1; r >= 0; r--) {
+            if (checkTopTile(col, topRow, r, board)) {
+                changed = true;
+                if (board.move(col, topRow, this.tile(col, r))) {
+                    topRow--;
+                }
+            } else if (board.tile(col, r) != null) {
+                if (board.tile(col, topRow).value() != board.tile(col, r).value()) {
+                    topRow--;
+                    if (topRow - r >= 1) {
+                        if (checkTopTile(col, topRow, r, board)) {
+                            changed = true;
+                            if (board.move(col, topRow, this.tile(col, r))) {
+                                topRow--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return changed;
+    }
+
     /** Tilt the board toward SIDE. Return true iff this changes the board.
      *
      * 1. If two Tile objects are adjacent in the direction of motion and have
@@ -113,7 +153,15 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        this.board.startViewingFrom(side);
+        int topRow = 3; // The top row that can be moved
+        // Move tile in each col
+        for (int c = 0; c < this.board.size(); c++) {
+            if (upWard(this.board, c, topRow)) {
+                changed = true;
+            };
+        }
+        this.board.startViewingFrom(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
