@@ -39,11 +39,9 @@ public class TestBuggyAList {
                 int randVal = StdRandom.uniform(0, 100);
                 L.addLast(randVal);
                 lst.addLast(randVal);
-                System.out.println("addLast(" + randVal + ")");
             } else if (operationNumber == 1) {
                 // size
                 int size = L.size();
-                System.out.println("size: " + size);
                 if (L.size() > 0) {
                     int exp = L.getLast();
                     int act = lst.getLast();
