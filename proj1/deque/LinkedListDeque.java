@@ -155,6 +155,10 @@ public class LinkedListDeque<T> implements Deque<T> {
      */
     @Override
     public T get(int index) {
+        if (index >= size || index < 0) {
+            System.out.println("Index out of range");
+            return null;
+        }
         StuffNode temp = this.sentinel;
         for (int i = 0; i <= index; i++) {
             temp = temp.next;
@@ -178,6 +182,29 @@ public class LinkedListDeque<T> implements Deque<T> {
     public boolean equals(Objects o) {
         // Todo
         return false;
+    }
+
+    /**
+     * Gets the item at the given index, where 0 is the front,
+     * but in recursive way
+     */
+    public T getRecursive(int index) {
+        if (index < 0 || index >= size) {
+            System.out.println("Index out of range!");
+            return null;
+        }
+
+        return getRecursive(sentinel.next, index);
+    }
+
+    /**
+     * Get recursive helper.
+     */
+    private T getRecursive(StuffNode node, int index) {
+        if (index == 0) {
+            return node.item;
+        }
+        return getRecursive(node.next, index - 1);
     }
 
     public static void main(String[] args) {
