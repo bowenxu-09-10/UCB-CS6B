@@ -1,7 +1,11 @@
 package deque;
 
 import org.junit.Test;
+
+import static deque.TimeTest.printTimingTable;
+import static deque.TimeTest.timeCompute;
 import static org.junit.Assert.*;
+import edu.princeton.cs.algs4.Stopwatch;
 
 
 /** Performs some basic linked list tests. */
@@ -162,4 +166,23 @@ public class LinkedListDequeTest {
 
         */
     }
+
+    @Test
+    /**
+     * Time test for add and remove functions. The time shall be constant regardless
+     * of the size of the deque.
+     */
+    public  void timeTest() {
+        LinkedListDeque<Integer> Ns = new LinkedListDeque();
+        LinkedListDeque<Double> times = new LinkedListDeque<>();
+        LinkedListDeque<Integer> opCounts = new LinkedListDeque<>();
+        for (int i = 1000; i <= 128_000; i *= 2) {
+            timeCompute(i, Ns, times, opCounts);
+            Ns.addLast(i);
+            opCounts.addLast(i);
+        }
+        printTimingTable(Ns, times, opCounts);
+    }
+
+
 }

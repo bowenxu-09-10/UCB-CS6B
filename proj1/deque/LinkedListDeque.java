@@ -117,7 +117,7 @@ public class LinkedListDeque<T> implements Deque<T> {
      */
     @Override
     public T removeFirst() {
-        // Todo
+
         return null;
     }
 
