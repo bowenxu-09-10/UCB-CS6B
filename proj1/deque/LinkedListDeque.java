@@ -19,6 +19,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         public StuffNode(T item, StuffNode node) {
             this.item = item;
             this.next = node;
+            this.prev = node;
         }
     }
 
@@ -30,12 +31,15 @@ public class LinkedListDeque<T> implements Deque<T> {
     public LinkedListDeque(T item) {
         sentinel = new StuffNode(null, null);
         sentinel.next = new StuffNode(item, sentinel);
+        sentinel.prev = sentinel.next;
+        size = 1;
     }
 
     /**
      * Adds an item of type T to the front of the deque.
      */
-    public void addFirst(T item) {};
+    public void addFirst(T item) {
+    };
 
     /**
      * Adds an item of type T to the back of the deque.
