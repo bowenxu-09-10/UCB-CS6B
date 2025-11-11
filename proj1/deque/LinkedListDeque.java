@@ -50,6 +50,9 @@ public class LinkedListDeque<T> implements Deque<T> {
      * Return true if deque is empty.
      */
     public boolean isEmpty() {
+        if (this.size == 0) {
+            return true;
+        }
         return false;
     }
 
