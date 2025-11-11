@@ -134,8 +134,19 @@ public class LinkedListDeque<T> implements Deque<T> {
      */
     @Override
     public T removeLast() {
-        // Todo
-        return null;
+        if (size == 0) {
+            System.out.println("There is no content in LLDeque.");
+            return null;
+        }
+        T content = this.get(size - 1);
+        StuffNode temp = sentinel.prev;
+        sentinel.prev.next = null;
+        sentinel.prev.prev.next = sentinel;
+        sentinel.prev = sentinel.prev.prev;
+        temp.prev = null;
+        temp = null;
+        size--;
+        return content;
     }
 
     /**
