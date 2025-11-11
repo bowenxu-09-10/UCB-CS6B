@@ -105,7 +105,6 @@ public class LinkedListDeque<T> implements Deque<T> {
      */
     @Override
     public void printDeque() {
-        // Todo
         for (int i = 0; i < size - 1; i++) {
             System.out.print(get(i) + " ");
         }
@@ -117,8 +116,17 @@ public class LinkedListDeque<T> implements Deque<T> {
      */
     @Override
     public T removeFirst() {
-
-        return null;
+        if (size == 0) {
+            System.out.println("There is no content in LLDeque.");
+            return null;
+        }
+        T content = this.get(0);
+        sentinel.next = sentinel.next.next;
+        sentinel.next.prev.prev = null;
+        sentinel.next.prev.next = null;
+        sentinel.next.prev = sentinel;
+        size--;
+        return content;
     }
 
     /**
