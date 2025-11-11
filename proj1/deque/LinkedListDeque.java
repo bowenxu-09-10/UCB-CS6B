@@ -39,6 +39,17 @@ public class LinkedListDeque<T> implements Deque<T> {
      * Adds an item of type T to the front of the deque.
      */
     public void addFirst(T item) {
+        size += 1;
+        // If this is the first node added, then initialize the sentinel.
+        if (this.size == 1) {
+            sentinel.next = new StuffNode(item, sentinel);
+            sentinel.prev = sentinel.next;
+            return;
+        }
+        StuffNode tmp = sentinel.next;
+        sentinel.next = new StuffNode(item, tmp);
+        tmp.prev = sentinel.next;
+        sentinel.next.prev = sentinel;
     };
 
     /**
@@ -104,5 +115,12 @@ public class LinkedListDeque<T> implements Deque<T> {
      */
     public boolean equals(Objects o) {
         return false;
+    }
+
+    public static void main(String[] args) {
+        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
+        lld1.addFirst("I");
+        lld1.addFirst("love");
+        lld1.addFirst("Toby");
     }
 }
