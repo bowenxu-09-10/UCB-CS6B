@@ -36,26 +36,36 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     /**
+     * If the LLDeque is empty, and need to initialize the sentinel.
+     */
+    private void initializeSentinel(T item) {
+        if (this.size == 0) {
+            sentinel.next = new StuffNode(item, sentinel);
+            sentinel.prev = sentinel.next;
+            size++;
+        }
+    }
+
+    /**
      * Adds an item of type T to the front of the deque.
      */
     public void addFirst(T item) {
-        size += 1;
-        // If this is the first node added, then initialize the sentinel.
-        if (this.size == 1) {
-            sentinel.next = new StuffNode(item, sentinel);
-            sentinel.prev = sentinel.next;
+        if (this.size == 0) {
+            initializeSentinel(item);
             return;
         }
         StuffNode tmp = sentinel.next;
         sentinel.next = new StuffNode(item, tmp);
         tmp.prev = sentinel.next;
         sentinel.next.prev = sentinel;
+        size += 1;
     };
 
     /**
      * Adds an item of type T to the back of the deque.
      */
-    public void addLast(T item) {};
+    public void addLast(T item) {
+    }
 
     /**
      * Return true if deque is empty.
