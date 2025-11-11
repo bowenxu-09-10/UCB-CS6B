@@ -13,15 +13,27 @@ public class LinkedListDequeTest {
      */
     public void getTest() {
         LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
-        lld1.addFirst("I");
+        lld1.addFirst("Toby");
         lld1.addFirst("love");
         String actual = lld1.get(1);
-        String expected = "love";
+        String expected = "Toby";
         assertEquals(expected, actual);
-        lld1.addFirst("Toby");
-        String actual2 = lld1.get(2);
-        String expected2 = "Toby";
+        lld1.addFirst("I");
+        String actual2 = lld1.get(1);
+        String expected2 = "love";
         assertEquals(expected, actual);
+    }
+
+    @Test
+    /**
+     * Print all items in a deque from first to the end.
+     */
+    public void printDequeTest() {
+        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
+        lld1.addLast("Hello");
+        lld1.addFirst("World");
+        lld1.addFirst("Hell");
+        lld1.printDeque();
     }
 
     @Test
@@ -31,8 +43,6 @@ public class LinkedListDequeTest {
      * && is the "and" operation. */
     public void addIsEmptySizeTest() {
 
-        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-        /*
         LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
 
 		assertTrue("A newly initialized LLDeque should be empty", lld1.isEmpty());
@@ -51,7 +61,6 @@ public class LinkedListDequeTest {
 
 		System.out.println("Printing out deque: ");
 		lld1.printDeque();
-		*/
     }
 
     @Test
