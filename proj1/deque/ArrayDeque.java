@@ -14,11 +14,35 @@ public class ArrayDeque<T> implements Deque<T>{
         size = 0;
     }
 
+    /**
+     * Helper func of copying array.
+     */
+    private void copyArray(T[] newAlst) {
+        // Copy the first n number util the end of the array.
+        System.arraycopy(items, (nextFirst + 1) % items.length, newAlst, 0,
+                (items.length - nextFirst - 1));
+        // Copy the rest items at the front of the array.
+        System.arraycopy(items, 0, newAlst, items.length - nextFirst - 1,
+                (nextLast + items.length) % items.length);
+        items = newAlst;
+    }
 
     /**
      * Resize the size of the array.
      */
     public void resize() {
+        int factor = 2;
+        if (size > items.length / 2 && size > 7) {
+            T[] newAlst = (T[]) new Object[items.length * factor];
+            copyArray(newAlst);
+            nextFirst = items.length - 1;
+            nextLast = size;
+        } else if (size < items.length / 4 && size > 7) {
+            T[] newAlst = (T[]) new Object[items.length / factor];
+            copyArray(newAlst);
+            nextFirst = items.length - 1;
+            nextLast = size;
+        }
     }
 
     /**
@@ -28,6 +52,7 @@ public class ArrayDeque<T> implements Deque<T>{
         resize();
         items[nextFirst] = item;
         nextFirst = (items.length + nextFirst - 1) % items.length;
+        size++;
     }
 
     /**
@@ -37,6 +62,7 @@ public class ArrayDeque<T> implements Deque<T>{
         resize();
         items[nextLast] = item;
         nextLast = (items.length + nextLast + 1) % items.length;
+        size++;
     }
 
     /**
