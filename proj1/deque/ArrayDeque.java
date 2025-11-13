@@ -59,8 +59,7 @@ public class ArrayDeque<T> implements Deque<T>{
      * Returns the number of items in the deque.
      */
     public int size() {
-        // Todo
-        return 0;
+        return size;
     }
 
     /**
