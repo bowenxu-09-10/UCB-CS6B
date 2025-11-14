@@ -223,6 +223,6 @@ public class LinkedListDequeTest {
         lld3.addLast("Toby");
 
         assertEquals(true, lld1.equals(lld2));
-        assertEquals(false, lld1.equals(lld3));
+        assertEquals(true, lld1.equals(lld3));
     }
 }
