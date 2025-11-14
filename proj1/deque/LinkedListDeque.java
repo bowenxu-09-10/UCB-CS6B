@@ -29,13 +29,6 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         size = 0;
     }
 
-    public LinkedListDeque(T item) {
-        sentinel = new StuffNode(null, null);
-        sentinel.next = new StuffNode(item, sentinel);
-        sentinel.prev = sentinel.next;
-        size = 1;
-    }
-
     /**
      * If the LLDeque is empty, and need to initialize the sentinel.
      */
@@ -82,16 +75,16 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         lstNode = null;
     }
 
-    /**
-     * Return true if deque is empty.
-     */
-    @Override
-    public boolean isEmpty() {
-        if (this.size == 0) {
-            return true;
-        }
-        return false;
-    }
+//    /**
+//     * Return true if deque is empty.
+//     */
+//    @Override
+//    public boolean isEmpty() {
+//        if (this.size == 0) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * Returns the number of items in the deque.
@@ -235,15 +228,5 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             return node.item;
         }
         return getRecursive(node.next, index - 1);
-    }
-
-    public static void main(String[] args) {
-        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
-        lld1.addLast("I");
-        lld1.addLast("love");
-        lld1.addLast("Toby");
-        for (String str : lld1) {
-            System.out.println(str);
-        }
     }
 }
