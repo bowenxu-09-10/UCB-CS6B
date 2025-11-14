@@ -120,9 +120,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
         resize();
-        T item = items[(nextLast + items.length -1) % items.length];
-        items[(nextLast + items.length -1) % items.length] = null;
-        nextLast = (nextLast + items.length -1) % items.length;
+        T item = items[(nextLast + items.length - 1) % items.length];
+        items[(nextLast + items.length - 1) % items.length] = null;
+        nextLast = (nextLast + items.length - 1) % items.length;
         size--;
         return item;
     }
