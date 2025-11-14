@@ -18,7 +18,12 @@ public interface Deque<T> {
     /**
      * Return true if deque is empty.
      */
-    public boolean isEmpty();
+    default public boolean isEmpty() {
+        if (this.size() == 0) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Returns the number of items in the deque.
