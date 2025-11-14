@@ -1,7 +1,6 @@
 package deque;
 
 import java.util.Iterator;
-import java.util.Objects;
 import java.math.*;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
