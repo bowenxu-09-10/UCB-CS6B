@@ -70,15 +70,15 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         size++;
     }
 
-    /**
-     * Return true if deque is empty.
-     */
-    public boolean isEmpty() {
-        if (size == 0) {
-            return true;
-        }
-        return false;
-    }
+//    /**
+//     * Return true if deque is empty.
+//     */
+//    public boolean isEmpty() {
+//        if (size == 0) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * Returns the number of items in the deque.
