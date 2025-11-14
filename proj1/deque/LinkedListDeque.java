@@ -1,9 +1,10 @@
 package deque;
 
+import javax.swing.*;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class LinkedListDeque<T> implements Deque<T> {
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     // Return the size of current LLDeque.
     private int size;
@@ -167,8 +168,27 @@ public class LinkedListDeque<T> implements Deque<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        // Todo
-        return null;
+        return new LLDIterator();
+    }
+
+    /**
+     * Iterator
+     */
+    private class LLDIterator implements Iterator<T> {
+        private int pos;
+        public LLDIterator() {
+            pos = 0;
+        }
+
+        public boolean hasNext() {
+            return pos < size;
+        }
+
+        public T next() {
+            T item = get(pos);
+            pos++;
+            return item;
+        }
     }
 
     /**
@@ -204,9 +224,12 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     public static void main(String[] args) {
-//        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
-//        lld1.addLast("I");
-//        lld1.addLast("love");
-//        lld1.addLast("Toby");
+        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
+        lld1.addLast("I");
+        lld1.addLast("love");
+        lld1.addLast("Toby");
+        for (String str : lld1) {
+            System.out.println(str);
+        }
     }
 }
