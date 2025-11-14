@@ -94,5 +94,10 @@ public class ArrayDequeTest {
         }
 
         assertEquals(true, lld1.equals(lld2));
+        LinkedListDeque<String> lld3 = new LinkedListDeque<>();
+        lld3.addLast("I");
+        lld3.addLast("love");
+        lld3.addLast("Toby");
+        assertEquals(false, lld1.equals(lld3));
     }
 }
