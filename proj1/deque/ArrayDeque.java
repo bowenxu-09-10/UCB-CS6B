@@ -102,6 +102,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * Removes and returns the item at the front of the deque.
      */
     public T removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
         resize();
         T item = items[(nextFirst + 1) % items.length];
         items[(nextFirst + 1) % items.length] = null;
@@ -114,6 +117,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * Removes and returns the item at the back of the deque.
      */
     public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
         resize();
         T item = items[(nextLast + items.length -1) % items.length];
         items[(nextLast + items.length -1) % items.length] = null;
