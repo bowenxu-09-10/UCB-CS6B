@@ -178,7 +178,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             }
             return true;
         }
-        return true;
+        return false;
     }
 
     public static void main(String[] args) {
