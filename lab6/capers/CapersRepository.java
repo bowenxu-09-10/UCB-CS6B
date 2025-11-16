@@ -23,7 +23,7 @@ public class CapersRepository {
     static final File CAPERS_FOLDER = Utils.join(CWD, ".capers");
 
     /** File that store story. */
-    static final File STORY_FOLDER = Utils.join(CWD, "story");
+    static final File STORY_FILE = Utils.join(CWD, "story");
 
     /**
      * Does required filesystem operations to allow for persistence.
@@ -38,7 +38,7 @@ public class CapersRepository {
         try {
             CAPERS_FOLDER.mkdir();
             Dog.DOG_FOLDER.mkdir();
-            STORY_FOLDER.createNewFile();
+            STORY_FILE.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
