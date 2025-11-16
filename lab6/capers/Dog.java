@@ -72,6 +72,12 @@ public class Dog implements Serializable{ // TODO
         if (DOG_FILE.exists()) {
             System.out.println("Dog name has already exist.");
             return;
+        } else {
+            try {
+                DOG_FILE.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         // Store dog's info to file
