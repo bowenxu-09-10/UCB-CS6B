@@ -63,22 +63,22 @@ public class Dog implements Serializable{ // TODO
      */
     public void saveDog() {
         // TODO (hint: don't forget dog names are unique)
-        File newDog = Utils.join(DOG_FOLDER, this.name);
+        File DOG_FILE = Utils.join(DOG_FOLDER, this.name);
 
-        if (newDog.exists()) {
+        if (DOG_FILE.exists()) {
             System.out.println("Dog name have already exist.");
             return;
         }
 
         // Create a dogFile storing dog object.
         try {
-            newDog.createNewFile();
+            DOG_FILE.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // Store dog's info to file
-        writeObject(newDog, this);
+        writeObject(DOG_FILE, this);
     }
 
     @Override
