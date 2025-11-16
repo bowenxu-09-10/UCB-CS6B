@@ -51,9 +51,19 @@ public class CapersRepository {
      */
     public static void writeStory(String text) {
         // TODO
-        String content = readContentsAsString(STORY_FILE);
-        writeContents(STORY_FILE, content + "\n" + text);
-        System.out.println(content + "\n" + text);
+        if (!CAPERS_FOLDER.exists()) {
+            setupPersistence();
+        }
+        String content = "";
+        if (STORY_FILE.exists()) {
+            content = readContentsAsString(STORY_FILE);
+            if (!content.isEmpty()) {
+                content += "\n";
+            }
+        }
+        String newContent = content + text;
+        writeContents(STORY_FILE, newContent);
+        System.out.println(newContent);
     }
 
     /**
