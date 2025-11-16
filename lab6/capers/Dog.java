@@ -70,7 +70,8 @@ public class Dog implements Serializable{ // TODO
         File DOG_FILE = Utils.join(DOG_FOLDER, this.name);
 
         if (DOG_FILE.exists()) {
-            System.out.println("Dog name has already exist.");
+            // Update current dog info.
+            writeObject(DOG_FILE, this);
             return;
         } else {
             try {
