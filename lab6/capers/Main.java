@@ -57,7 +57,6 @@ public class Main {
             break;
         case "dog":
             validateNumArgs("dog", args, 4);
-            // TODO: make a dog
             name = args[1];
             breed = args[2];
             age = Integer.parseInt(args[3]);
@@ -66,7 +65,6 @@ public class Main {
             break;
         case "birthday":
             validateNumArgs("birthday", args, 2);
-            // TODO: celebrate this dog's birthday
             name = args[1];
             CapersRepository.celebrateBirthday(name);
             break;
