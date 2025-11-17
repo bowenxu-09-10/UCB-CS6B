@@ -3,6 +3,7 @@ package gitlet;
 // TODO: any imports you need here
 
 import java.util.Date; // TODO: You'll likely use this in this class
+import java.util.HashSet;
 
 /** Represents a gitlet commit object.
  *  TODO: It's a good idea to give a description here of what else this Class
@@ -29,16 +30,17 @@ public class Commit {
     private String parent;
 
     /** The file current commit tracked. */
-    private String[] file;
+    private HashSet<String> file;
 
     /** The file's PID. */
-    private String[] filePID;
+    private HashSet<String> filePID;
 
     /** Number of tracked file. */
     private int size;
 
     /* TODO: fill in the rest of this class. */
-    Commit(String message) {
+    Commit(String message, String parent) {
         this.message = message;
+        this.parent = parent;
     }
 }
