@@ -49,17 +49,18 @@ public class Repository {
      *      - commit -- store commit info
      *      - index -- store staging files
      *      - HEAD -- store current commit reference
+     *      - branches -- store branches
      *  This will automatically start with one commit with message
      *  "initial commit".
      *  It will have a single branch "master" pointing to this
      *  initial commit.
      *  Timestamp will be 00:00:00 UTC, Thursday, 1 January 1970.
      */
-    public void initSystem() {
+    public void initCommend() {
         setUpPersistence();
         Commit intialCommit = new Commit();
-        // ToDo: to save the commit into a file
-        // Call branch, and make it point to it
+        // ToDo: create a master branch, and save current commit.
+
     }
 
     /** Saves a snapshot of tracked files in the current commit and
@@ -69,5 +70,4 @@ public class Repository {
     public void makeCommit() {
         // ToDo
     }
-
 }
