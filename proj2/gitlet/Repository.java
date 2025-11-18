@@ -1,13 +1,15 @@
 package gitlet;
 
 import java.io.File;
+import java.io.IOException;
+
 import static gitlet.Utils.*;
 
 // TODO: any imports you need here
 
 /** Represents a gitlet repository.
- *  TODO: It's a good idea to give a description here of what else this Class
- *  does at a high level.
+ *  The structure of a gitlet is as follows:
+ *  .gitlet/ -- top level folder for all persistent data
  *
  *  @author TODO
  */
@@ -26,4 +28,36 @@ public class Repository {
     public static final File GITLET_DIR = join(CWD, ".gitlet");
 
     /* TODO: fill in the rest of this class. */
+
+    /** Create filesystem to allow for persistence. */
+    public static void setUpPersistence() {
+        GITLET_DIR.mkdir();
+        Commit.COMMIT_DIR.mkdir();
+    }
+
+    /** Creates a new Gitlet version-control system in the current
+     *  directory.
+     *  The structure of a gitlet is as follows:
+     *  .gitlet/ -- top level folder for all persistent data
+     *      - commit -- store commit info
+     *      - index -- store staging files
+     *  This will automatically start with one commit with message
+     *  "initial commit".
+     *  It will have a single branch "master" pointing to this
+     *  initial commit.
+     *  Timestamp will be 00:00:00 UTC, Thursday, 1 January 1970.
+     */
+    public static void initSystem() {
+        setUpPersistence();
+        // Commit something
+        // Call branch, and make it point to it
+    }
+
+    /** Saves a snapshot of tracked files in the current commit and
+     *  staging area so they can be restored at a later time, creating
+     *  a new commit.
+     */
+    public void makeCommit() {
+        // ToDo
+    }
 }
