@@ -2,6 +2,7 @@ package gitlet;
 
 // TODO: any imports you need here
 
+import java.io.File;
 import java.util.Date; // TODO: You'll likely use this in this class
 import java.util.HashSet;
 
@@ -12,6 +13,8 @@ import java.util.HashSet;
  *  @author TODO
  */
 public class Commit {
+    /** The commit directory in .gitlet. */
+    public static final File COMMIT_DIR = new File(Repository.GITLET_DIR, "commit");
     /**
      * TODO: add instance variables here.
      *
@@ -24,23 +27,27 @@ public class Commit {
     private String message;
 
     /** The timestamp if this Commit. */
-    private String timeStamp;
+    private Date timeStamp;
 
     /** The parent commit of current commit. */
     private String parent;
 
     /** The file current commit tracked. */
-    private HashSet<String> file;
-
-    /** The file's PID. */
-    private HashSet<String> filePID;
+    private HashSet<String> fileNameToBLOB;
 
     /** Number of tracked file. */
     private int size;
 
     /* TODO: fill in the rest of this class. */
-    Commit(String message, String parent) {
+    Commit(String message) {
         this.message = message;
-        this.parent = parent;
     }
+
+    /** Initial commit. */
+    Commit() {
+        this.message = "initial commit";
+        this.timeStamp = new Date(0);
+    }
+
+    // ToDo: get the parent commit
 }
