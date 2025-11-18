@@ -59,6 +59,7 @@ public class Repository {
      */
     public void initSystem() {
         setUpPersistence();
+        readHead();
         makeCommit();
         writeHead();
         // Commit something
@@ -81,5 +82,11 @@ public class Repository {
     /** Write current Head reference into the file. */
     public void writeHead() {
         // ToDo
+    }
+
+    /** Get commit PID. */
+    public String getCommitPID() {
+        // ToDo
+        return null;
     }
 }
