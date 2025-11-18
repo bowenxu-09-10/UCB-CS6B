@@ -28,8 +28,6 @@ public class Repository {
     public static final File CWD = new File(System.getProperty("user.dir"));
     /** The .gitlet directory. */
     public static final File GITLET_DIR = join(CWD, ".gitlet");
-    /** The HEAD reference. */
-    public static final File HEAD = join(GITLET_DIR, "HEAD");
 
     /* TODO: fill in the rest of this class. */
 
@@ -38,7 +36,7 @@ public class Repository {
         try {
             GITLET_DIR.mkdir();
             Commit.COMMIT_DIR.mkdir();
-            HEAD.createNewFile();
+            Branch.HEAD.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -59,10 +57,8 @@ public class Repository {
      */
     public void initSystem() {
         setUpPersistence();
-        Branch.readHead();
-        makeCommit();
-        Branch.writeHead();
-        // Commit something
+        Commit intialCommit = new Commit();
+        // ToDo: to save the commit into a file
         // Call branch, and make it point to it
     }
 
