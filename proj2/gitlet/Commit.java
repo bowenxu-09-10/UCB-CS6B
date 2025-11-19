@@ -66,4 +66,11 @@ public class Commit implements Serializable {
         fileNameToBLOB = parent.fileNameToBLOB;
         // ToDo: check staging area. add or remove.
     }
+
+    /** Get head commit. */
+    public static Commit getHeadCommit() {
+        String headSha1 = Branch.getHeadBranch();
+        File headCommit = join(COMMIT_DIR, headSha1);
+        return readObject(headCommit, Commit.class);
+    }
 }
