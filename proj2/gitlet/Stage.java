@@ -8,9 +8,9 @@ import static gitlet.Utils.*;
 
 public class Stage {
     /** A Map for staged file for addition. */
-    private HashMap stagedAddition;
+    private static HashMap<String, String> stagedAddition;
     /** A Set for staged file for removal. */
-    private Set<String> stagedRemoval;
+    private static Set<String> stagedRemoval;
 
     /** The index file acts as staging area. */
     public static final File INDEX = join(Repository.GITLET_DIR, "index");
@@ -34,4 +34,13 @@ public class Stage {
         }
         return false;
     }
+
+    /** Add file to staging area. */
+    private static void addStage(String fileName) {
+        if (checkSame(fileName)) {
+            return;
+        }
+        stagedAddition.put(fileName, sha1(fileName));
+    }
+
 }
