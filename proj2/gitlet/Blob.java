@@ -9,7 +9,7 @@ public class Blob {
     /** The blob folder contains blob object. */
     public static final File BLOB_FOLDER = join(Repository.GITLET_DIR, "blob");
 
-    /** Save contents. */
+    /** Saved contents. */
     private final byte[] contents;
 
     /** Constructor. */
@@ -17,7 +17,7 @@ public class Blob {
         this.contents = contents;
     }
 
-    /** Return contents in certain Blob. */
+    /** Return contents in specific Blob. */
     public byte[] getContents(String blobName) {
         File requiredBlob = join(BLOB_FOLDER, blobName);
         requiredBlob.mkdirs();
