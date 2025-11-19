@@ -13,8 +13,10 @@ public class Blob {
     private final byte[] contents;
 
     /** Constructor. */
-    Blob(byte[] contents) {
-        this.contents = contents;
+    Blob(String fileName) {
+        File file = join(Repository.CWD, fileName);
+        byte[] content = readContents(file);
+        this.contents = content;
     }
 
     /** Return contents in specific Blob. */
@@ -25,7 +27,7 @@ public class Blob {
     }
 
     /** Save contents in a file named by sha-1. */
-    public void saveBlob() {
+    public String saveBlob() {
         File newBlob = join(BLOB_FOLDER, sha1(contents));
         try {
             newBlob.createNewFile();
@@ -33,5 +35,6 @@ public class Blob {
             throw new RuntimeException(e);
         }
         writeContents(newBlob, contents);
+        return sha1(contents);
     }
 }
