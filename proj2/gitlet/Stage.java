@@ -43,4 +43,13 @@ public class Stage {
         stagedAddition.put(fileName, sha1(fileName));
     }
 
+    /** Get staded for addition hashmap. */
+    public static HashMap getStagedAddition() {
+        return stagedAddition;
+    }
+
+    /** Get staded for removal hashmap. */
+    public static Set getStagedRemoval() {
+        return stagedRemoval;
+    }
 }
