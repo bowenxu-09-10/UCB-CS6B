@@ -2,9 +2,6 @@ package gitlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import static gitlet.Utils.*;
 
@@ -12,6 +9,7 @@ import static gitlet.Utils.*;
  *  The structure of a gitlet is as follows:
  *  .gitlet/ -- top level folder for all persistent data
  *    - commit -- store commit info
+ *    - branches -- store branch
  *    - index -- store staging files
  *    - HEAD -- store HEAD reference
  *  @author Bowen
@@ -21,13 +19,9 @@ public class Repository {
     public static final File CWD = new File(System.getProperty("user.dir"));
     /** The .gitlet directory. */
     public static final File GITLET_DIR = join(CWD, ".gitlet");
-    /** The index file acts as staging area. */
-    public static final File INDEX = join(GITLET_DIR, "index");
 
-    /** A Map for staged file for addition. */
-    private Map<String, String> stagedAddition;
-    /** A Set for staged file for removal. */
-    private Set<String> stagedRemoval;
+    /** Staging area. */
+    private static Stage stageArea;
 
     /** Create filesystem to allow for persistence. */
     public static void setUpPersistence() {
@@ -36,7 +30,7 @@ public class Repository {
             Commit.COMMIT_DIR.mkdir();
             Branch.HEAD.createNewFile();
             Branch.BRANCH_DIR.mkdirs();
-            INDEX.createNewFile();
+            Stage.INDEX.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -44,12 +38,6 @@ public class Repository {
 
     /** Creates a new Gitlet version-control system in the current
      *  directory.
-     *  The structure of a gitlet is as follows:
-     *  .gitlet/ -- top level folder for all persistent data
-     *      - commit -- store commit info
-     *      - index -- store staging files
-     *      - HEAD -- store current commit reference
-     *      - branches -- store branches
      *  This will automatically start with one commit with message
      *  "initial commit".
      *  It will have a single branch "master" pointing to this
@@ -57,11 +45,14 @@ public class Repository {
      *  Timestamp will be 00:00:00 UTC, Thursday, 1 January 1970.
      */
     public static void initCommend() {
+        if (GITLET_DIR.exists()) {
+            System.out.println("A Gitlet version-control system already exists in the current directory.");
+            System.exit(0);
+        }
         setUpPersistence();
         Commit initialCommit = new Commit();
         Branch.newBranch("Master");
-        // ToDo: create a master branch, and save current commit.
-
+        Branch.writeBranch(sha1(initialCommit));
     }
 
     /** Saves a snapshot of tracked files in the current commit and
@@ -73,18 +64,14 @@ public class Repository {
     }
 
     /** Add new created files or edited files to staging area. */
-    public static void addFile(String[] args) {
+    public static void addCommend(String fileName) {
         checkFolderGitleted();
-        for (int i = 1; i < args.length; i++) {
-            File curr = join(CWD, args[i]);
-            if (!curr.exists()) {
-                System.out.println("File does not exist.");
-                System.exit(0);
-            }
+        File file = join(CWD, fileName);
+        if (!file.exists()) {
+            System.out.println("File does not exist.");
+            System.exit(0);
         }
-        Commit head = Commit.getHeadCommit();
-        HashMap tractedFile = head.fileNameToBLOB;
-
+        stageArea.addStage(fileName);
     }
 
     /** Check whether current folder is gitleted folder. */
