@@ -39,6 +39,7 @@ public class Repository {
             GITLET_DIR.mkdir();
             Commit.COMMIT_DIR.mkdir();
             Branch.HEAD.createNewFile();
+            Branch.BRANCH_DIR.mkdirs();
             INDEX.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,7 +60,7 @@ public class Repository {
      *  initial commit.
      *  Timestamp will be 00:00:00 UTC, Thursday, 1 January 1970.
      */
-    public void initCommend() {
+    public static void initCommend() {
         setUpPersistence();
         Commit initialCommit = new Commit();
         Branch.newBranch("Master");
