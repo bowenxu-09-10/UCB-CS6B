@@ -74,6 +74,7 @@ public class Repository {
 
     /** Add new created files or edited files to staging area. */
     public static void addFile(String[] args) {
+        checkFolderGitleted();
         for (int i = 1; i < args.length; i++) {
             File curr = join(CWD, args[i]);
             if (!curr.exists()) {
@@ -84,5 +85,13 @@ public class Repository {
         Commit head = Commit.getHeadCommit();
         HashMap tractedFile = head.fileNameToBLOB;
 
+    }
+
+    /** Check whether current folder is gitleted folder. */
+    public static void checkFolderGitleted() {
+        if (!GITLET_DIR.exists()) {
+            System.out.println("Not in an initialized Gitlet directory.");
+            System.exit(0);
+        }
     }
 }
