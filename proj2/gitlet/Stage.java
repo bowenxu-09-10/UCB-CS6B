@@ -26,22 +26,16 @@ public class Stage {
      *  True for is the same as committed. */
     private static boolean checkSameCommit(String fileName) {
         Commit head = Commit.getHeadCommit();
-        HashMap fileTracted = head.fileNameToBLOB;
-        if (fileTracted.containsValue(saveFile(fileName))) {
-            return true;
-        }
-        return false;
+        HashMap<String, String> fileTracted = head.fileNameToBLOB;
+        return fileTracted.containsValue(saveFile(fileName));
     }
 
     /** Check if current file added is the same as staged.
      *  True for is the same as committed. */
     private static boolean checkSameStage(String fileName) {
         Commit head = Commit.getHeadCommit();
-        HashMap fileTracted = head.fileNameToBLOB;
-        if (fileTracted.containsValue(saveFile(fileName))) {
-            return true;
-        }
-        return false;
+        HashMap<String, String> fileTracted = head.fileNameToBLOB;
+        return fileTracted.containsValue(saveFile(fileName));
     }
 
     /** Add file to staging area. If added one is the same as commited, but in staged area,
@@ -56,12 +50,18 @@ public class Stage {
     }
 
     /** Get staded for addition hashmap. */
-    public static HashMap getStagedAddition() {
+    public static HashMap<String, String> getStagedAddition() {
         return stagedAddition;
     }
 
     /** Get staded for removal hashmap. */
-    public static Set getStagedRemoval() {
+    public static Set<String> getStagedRemoval() {
         return stagedRemoval;
+    }
+
+    /** Clear all the stage area. */
+    public static void clear() {
+        stagedAddition = null;
+        stagedRemoval = null;
     }
 }
