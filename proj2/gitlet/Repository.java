@@ -104,7 +104,7 @@ public class Repository {
         }
     }
 
-    /** Log all the message. */
+    /** Log all the message in current branch. */
     public static void logCommend() {
         checkFolderGitleted();
         Commit head = Commit.getHeadCommit();
@@ -117,6 +117,19 @@ public class Repository {
         // Todo: If have two parent commit, add one line. merged ...
         while (curr.getParent() != null) {
             curr = curr.getParent();
+            System.out.println("===");
+            System.out.println("commit " + curr.getCommitID());
+            System.out.println("Date: " + curr.getTimeStamp());
+            System.out.println(curr.getMessage());
+            System.out.println();
+        }
+    }
+
+    /** Log all the message. */
+    public static void globalLogCommend() {
+        for (String fileName : plainFilenamesIn(Commit.COMMIT_DIR)) {
+            File file = join(Commit.COMMIT_DIR, fileName);
+            Commit curr = readObject(file, Commit.class);
             System.out.println("===");
             System.out.println("commit " + curr.getCommitID());
             System.out.println("Date: " + curr.getTimeStamp());
