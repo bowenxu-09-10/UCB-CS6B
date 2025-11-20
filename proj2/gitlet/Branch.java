@@ -21,6 +21,13 @@ public class Branch {
         writeContents(HEAD, branchName);
     }
 
+    /** Return HEAD branch's SHA-1. */
+    public static String getHeadBranch() {
+        String branchName = readContentsAsString(Branch.HEAD);
+        File head = join(Branch.BRANCH_DIR, branchName);
+        return readContentsAsString(head);
+    }
+
     /** Create a new branch file. */
     public static void newBranch(String branchName) {
         File branch = join(BRANCH_DIR, branchName);
