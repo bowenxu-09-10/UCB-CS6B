@@ -33,6 +33,9 @@ public class Commit implements Serializable {
     /** The second parent of current commit. (It'll happen in merge.) */
     private String secondParent;
 
+    /** The sha-1 id of current commit. */
+    private String commitID;
+
     /** The file current commit tracked. */
     public HashMap<String, String> fileNameToBLOB;
 
@@ -105,7 +108,7 @@ public class Commit implements Serializable {
         if (timeStamp == null) {
             this.timeStamp = new Date();
         }
-        File commit = join(COMMIT_DIR, sha1((Object) serialize(this)));
+        File commit = join(COMMIT_DIR, getCommitID());
         try {
             commit.createNewFile();
         } catch (IOException e) {
@@ -113,5 +116,11 @@ public class Commit implements Serializable {
         }
         writeObject(commit, this);
         Stage.clear();
+    }
+
+    /** Get the given commit's sha-1. */
+    public String getCommitID() {
+        commitID = sha1((Object) serialize(this));
+        return commitID;
     }
 }
