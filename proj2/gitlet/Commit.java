@@ -128,4 +128,9 @@ public class Commit implements Serializable {
     public Date getTimeStamp() {
         return timeStamp;
     }
+
+    /** Get message. */
+    public String getMessage() {
+        return message;
+    }
 }
