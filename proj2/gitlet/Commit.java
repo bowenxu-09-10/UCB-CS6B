@@ -3,9 +3,12 @@ package gitlet;
 // TODO: any imports you need here
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
+
 import static gitlet.Utils.*;
 
 /** Represents a gitlet commit object.
@@ -42,12 +45,9 @@ public class Commit implements Serializable {
         this.parent = null;
     }
 
-    // ToDo: Somehow make everything in one go so that
-    //       it can be called by makeCommit() in Repository
-
     /** Commit a commit and set up EVERYTHING in one go. */
     public void makeCommit() {
-        // ToDo
+        updateFile();
     }
 
     /** Get parent commit. */
@@ -63,9 +63,26 @@ public class Commit implements Serializable {
      *  the staging area. */
     private void updateFile() {
         Commit parent = this.getParent();
-        fileNameToBLOB = parent.fileNameToBLOB;
+        HashMap<String, String> parentFileTrack = parent.fileNameToBLOB;
+        // Copy parent Commit file map.
+        this.fileNameToBLOB = new HashMap<>(fileNameToBLOB);
+        for (String fileName : fileNameToBLOB.keySet()) {
+            Set<String> stagedRemoval = Stage.getStagedRemoval();
+            HashMap<String, String> stagedAdditon = Stage.getStagedAddition();
 
-        // ToDo: check staging area. add or remove.
+            if (stagedAdditon.isEmpty() && stagedRemoval.isEmpty()) {
+                System.out.println("No changes added to the commit.");
+                System.exit(0);
+            }
+            // Remove
+            if (stagedRemoval.contains(fileName)) {
+                fileNameToBLOB.remove(fileName);
+            }
+            // Addition
+            if (stagedAdditon.containsKey(fileName)) {
+                fileNameToBLOB.put(fileName, Stage.saveAndGetFilePID(fileName));
+            }
+        }
     }
 
     /** Get head commit. */
@@ -73,5 +90,19 @@ public class Commit implements Serializable {
         String headSha1 = Branch.getHeadBranch();
         File headCommit = join(COMMIT_DIR, headSha1);
         return readObject(headCommit, Commit.class);
+    }
+
+    /** Save commit into a file to make persistence. */
+    public void saveCommit() {
+        LocalDateTime myDateObj = LocalDateTime.now();
+
+        File commit = join(COMMIT_DIR, sha1(this));
+        try {
+            commit.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        writeObject(commit, this);
+        Stage.clear();
     }
 }
