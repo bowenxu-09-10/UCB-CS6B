@@ -94,8 +94,7 @@ public class Commit implements Serializable {
 
     /** Save commit into a file to make persistence. */
     public void saveCommit() {
-        LocalDateTime myDateObj = LocalDateTime.now();
-
+        this.timeStamp = new Date();
         File commit = join(COMMIT_DIR, sha1(this));
         try {
             commit.createNewFile();
