@@ -26,15 +26,19 @@ public class Blob {
         return readContents(requiredBlob);
     }
 
-    /** Save contents in a file named by sha-1. */
+    /** Save contents in a file named by sha-1, ana return its pid.*/
     public String saveBlob() {
         File newBlob = join(BLOB_FOLDER, sha1(contents));
-        try {
-            newBlob.createNewFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (newBlob.exists()) {
+            return sha1(contents);
+        } else {
+            try {
+                newBlob.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            writeContents(newBlob, contents);
         }
-        writeContents(newBlob, contents);
         return sha1(contents);
     }
 }
