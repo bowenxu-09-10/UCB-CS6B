@@ -30,12 +30,16 @@ public class Commit implements Serializable {
     /** The parent commit of current commit. */
     private String parent;
 
+    /** The second parent of current commit. (It'll happen in merge.) */
+    private String secondParent;
+
     /** The file current commit tracked. */
     public HashMap<String, String> fileNameToBLOB;
 
-    Commit(String message, String parent) {
+    Commit(String message, String parent, String secondParent) {
         this.message = message;
         this.parent = parent;
+        this.secondParent = secondParent;
     }
 
     /** Initial commit. */
@@ -43,6 +47,7 @@ public class Commit implements Serializable {
         this.message = "initial commit";
         this.timeStamp = new Date(0);
         this.parent = null;
+        this.secondParent = null;
         Stage stage = Stage.load();
         System.out.println("Before commit: " + stage.getStagedAddition());
     }
