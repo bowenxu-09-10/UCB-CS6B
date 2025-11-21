@@ -71,8 +71,7 @@ public class Repository {
             System.out.println("No changes added to the commit.");
             return;
         }
-        Commit head = Commit.getHeadCommit();
-        String headID = head.getCommitID();
+        String headID = Branch.getHeadBranch();
         Commit newCommit = new Commit(test, headID, null);
         newCommit.makeCommit();
         newCommit.saveCommit();
