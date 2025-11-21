@@ -33,6 +33,9 @@ public class Commit implements Serializable {
     /** The second parent of current commit. (It'll happen in merge.) */
     private String secondParent;
 
+    /** The pid of this commit. */
+    private String pid;
+
     /** The file current commit tracked. */
     private HashMap<String, String> fileNameToBLOB;
 
@@ -40,6 +43,7 @@ public class Commit implements Serializable {
         this.message = message;
         this.parent = parent;
         this.secondParent = secondParent;
+        this.fileNameToBLOB = new HashMap<>(getParent().getFileNameToBLOB());
     }
 
     /** Initial commit. */
@@ -48,6 +52,7 @@ public class Commit implements Serializable {
         this.timeStamp = new Date(0);
         this.parent = null;
         this.secondParent = null;
+        this.fileNameToBLOB = new HashMap<>();
     }
 
     /** Commit a commit and set up EVERYTHING in one go. */
@@ -72,23 +77,18 @@ public class Commit implements Serializable {
         HashMap<String, String> stagedAdditon = stage.getStagedAddition();
         Set<String> stagedRemoval = stage.getStagedRemoval();
 
-        Commit parent = this.getParent();
-        if (parent.fileNameToBLOB == null) {
+        if (this.fileNameToBLOB.isEmpty()) {
             this.fileNameToBLOB = new HashMap<>(stagedAdditon);
             return;
         }
-
-        // Copy parent Commit file map.
-        this.fileNameToBLOB = new HashMap<>(parent.fileNameToBLOB);
 
         // Remove
         for (String fileName : stagedRemoval) {
             this.fileNameToBLOB.remove(fileName);
         }
         // Addition
-        for (String fileName : stagedRemoval) {
-            this.fileNameToBLOB.put(fileName, stage.saveAndGetFilePID(fileName));
-        }
+        this.fileNameToBLOB.putAll(stagedAdditon);
+
     }
 
     /** Get head commit. */
@@ -103,8 +103,8 @@ public class Commit implements Serializable {
         if (timeStamp == null) {
             this.timeStamp = new Date();
         }
-
-        File commit = join(COMMIT_DIR, getCommitID());
+        setPid();
+        File commit = join(COMMIT_DIR, getPid());
         try {
             commit.createNewFile();
         } catch (IOException e) {
@@ -112,11 +112,6 @@ public class Commit implements Serializable {
         }
         writeObject(commit, this);
         Stage.clear();
-    }
-
-    /** Get the given commit's sha-1. */
-    public String getCommitID() {
-        return sha1((Object) serialize(this));
     }
 
     /** Get timestamp. */
@@ -132,5 +127,15 @@ public class Commit implements Serializable {
     /** Get fileNameToBlob. */
     public HashMap<String, String> getFileNameToBLOB() {
         return fileNameToBLOB;
+    }
+
+    /** Get commit id. */
+    public String getPid() {
+        return pid;
+    }
+
+    /** Set commit id. */
+    public void setPid() {
+        this.pid = sha1(this.parent + this.secondParent + this.message + this.timeStamp);
     }
 }
