@@ -15,17 +15,21 @@ public class Checkout {
     }
 
     private static void checkoutCommit(String[] args) {
-        if (!checkCommendFormat(args)) {
+        if (!(checkCommendFormat(args) || checkPrefix(args[1]).equals(""))) {
             System.exit(0);
         }
     }
 
-    private static boolean checkPrefix(String prefix) {
-        int count = 0; // Check if this id is the only one with such prefix.
+    /**
+     * Check if commit id is the only one with such prefix.
+     * @return the according commitID.
+     */
+    private  static String checkPrefix(String prefix) {
+        int count = 0;
         String target = "";
         for (String commit : plainFilenamesIn(Commit.COMMIT_DIR)) {
             if (commit.equals(prefix)) {
-                return true;
+                return commit;
             } else if (commit.contains(prefix)){
                 target = commit;
                 count++;
@@ -37,11 +41,11 @@ public class Checkout {
                 System.exit(0);
             }
         }
-        if (count == 1) {
-            return true;
+        if (count != 1) {
+            target="";
         }
         System.exit(0);
-        return false;
+        return target;
     }
 
     /**
@@ -73,13 +77,6 @@ public class Checkout {
      */
     public static void getCheckoutCommit(String[] args) {
         checkoutCommit(args);
-    }
-
-    /**
-     * Check if the given prefix is the only one.
-     */
-    public static boolean getCheckPrefix(String prefix) {
-        return checkPrefix(prefix);
     }
 
     /**
