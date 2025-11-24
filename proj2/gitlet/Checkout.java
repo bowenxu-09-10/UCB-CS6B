@@ -1,51 +1,88 @@
 package gitlet;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import static gitlet.Utils.*;
 
 public class Checkout {
-
     private static void checkoutFile(String[] args) {
         if (!checkCommendFormat(args)) {
             System.exit(0);
         }
+        Commit head = Commit.getHeadCommit();
+        String fileName = args[1];
+        if (!head.getFileNameToBLOB().containsKey(args[1])) {
+            System.out.println("File does not exist in that commit.");
+            System.exit(0);
+        }
+        HashMap<String, String> blobs = head.getFileNameToBLOB();
+        File file = join(Repository.CWD, fileName);
+        String blob = blobs.get(fileName);
+        File replaceFile = join(Blob.BLOB_FOLDER, blob);
+        byte[] content = readContents(replaceFile);
+        writeContents(file, content);
     }
 
-    private static void checkoutBranch(String branch) {
-
+    private static void checkoutBranch(String branchName) {
+        File branch = join(Branch.BRANCH_DIR, branchName);
+        if (!branch.exists()) {
+            System.out.println("No such branch exists.");
+            System.exit(0);
+        }
+        if (Branch.readHead().equals(branchName)) {
+            System.out.println("No need to checkout the current branch.");
+            System.exit(0);
+        }
+        Commit inBranch = Commit.getCommit(readContentsAsString(branch));
+        for (String fileName : plainFilenamesIn(Repository.CWD)) {
+            if (!inBranch.getFileNameToBLOB().containsKey(fileName)) {
+                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.exit(0);
+            }
+        }
+        HashMap<String, String> blobs = inBranch.getFileNameToBLOB();
+        // Import all the file in Branch.
+        for (String fileName : blobs.keySet()) {
+            File fileInCWD = join(Repository.CWD, fileName);
+            File fileInBlob = join(Blob.BLOB_FOLDER, blobs.get(fileName));
+            if (fileInCWD.exists()) {
+                writeContents(fileInCWD, readContents(fileInBlob));
+            } else {
+                try {
+                    fileInCWD.createNewFile();
+                    writeContents(fileInCWD, readContents(fileInBlob));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        // Remove all the tracked files but not tracked in Branch.
+        for (String fileName : plainFilenamesIn(Repository.CWD)) {
+            File fileInCWD = join(Repository.CWD, fileName);
+            if (!blobs.keySet().contains(fileInCWD)) {
+                fileInCWD.delete();
+            }
+        }
+        writeContents(Branch.HEAD, branchName);
     }
 
-    private static void checkoutCommit() {
-        String commitID = checkPrefix("25e7ffa38a235de");
-        // Check is the commend legal. Todo: uncomment
-//        if (!(checkCommendFormat(args) || commitID.equals(""))) {
-//            System.exit(0);
-//        }
-//        File commitFile = Utils.join(Commit.COMMIT_DIR, commitID);
-//        Commit commit = readObject(commitFile, Commit.class);
-//        String fileName = args[3];
-//        HashMap<String, String> blobs = commit.getFileNameToBLOB();
-//        if (!blobs.containsKey(fileName)) {
-//            System.out.println("File does not exist in that commit.");
-//        }
-//        File file = join(Repository.CWD, fileName);
-//        File replaceFile = join(Blob.BLOB_FOLDER, blobs.get(fileName));
-//        byte[] content = readContents(replaceFile);
-//        writeContents(file, content);
-        // Todo: delete it
+    private static void checkoutCommit(String[] args) {
+        String commitID = checkPrefix(args[1]);
+        // Check is the commend legal.
+        if (!(checkCommendFormat(args) || commitID.equals(""))) {
+            System.exit(0);
+        }
         File commitFile = Utils.join(Commit.COMMIT_DIR, commitID);
         Commit commit = readObject(commitFile, Commit.class);
-        String fileName = "test1";
+        String fileName = args[3];
         HashMap<String, String> blobs = commit.getFileNameToBLOB();
         if (!blobs.containsKey(fileName)) {
             System.out.println("File does not exist in that commit.");
         }
         File file = join(Repository.CWD, fileName);
-        String blob = blobs.get(fileName);
-        File replaceFile = join(Blob.BLOB_FOLDER, blob);
+        File replaceFile = join(Blob.BLOB_FOLDER, blobs.get(fileName));
         byte[] content = readContents(replaceFile);
         writeContents(file, content);
     }
@@ -66,7 +103,6 @@ public class Checkout {
             }
             // If current id prefix is not
             if (count > 1) {
-                // ToDo: see if there are designated message.
                 System.out.println("multiple commit with that prefix.");
                 System.exit(0);
             }
@@ -106,10 +142,9 @@ public class Checkout {
      *  that are tracked in the current branch but are not present in the
      *  checked-out branch are deleted.
      */
-    // Todo: Uncomment
-    public static void getCheckoutCommit() {
-        checkoutCommit();
-//        checkoutCommit(args);
+
+    public static void getCheckoutCommit(String[] args) {
+        checkoutCommit(args);
     }
 
     /**
