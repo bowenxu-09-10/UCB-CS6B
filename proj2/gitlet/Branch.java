@@ -46,6 +46,13 @@ public class Branch {
     /** Receive commitPID and write it into the current branch file. */
     public static void writeBranch(String commitPID) {
         File branch = join(BRANCH_DIR, readHead());
+        if (!branch.exists()) {
+            try {
+                branch.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         writeContents(branch, commitPID);
     }
 
