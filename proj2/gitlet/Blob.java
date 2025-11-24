@@ -22,7 +22,11 @@ public class Blob {
     /** Return contents in specific Blob. */
     public byte[] getContents(String blobName) {
         File requiredBlob = join(BLOB_FOLDER, blobName);
-        requiredBlob.mkdirs();
+        try {
+            requiredBlob.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return readContents(requiredBlob);
     }
 
