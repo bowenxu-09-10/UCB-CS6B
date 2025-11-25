@@ -12,8 +12,8 @@ public class Checkout {
             System.exit(0);
         }
         Commit head = Commit.getHeadCommit();
-        String fileName = args[1];
-        if (!head.getFileNameToBLOB().containsKey(args[1])) {
+        String fileName = args[2];
+        if (!head.getFileNameToBLOB().containsKey(fileName)) {
             System.out.println("File does not exist in that commit.");
             System.exit(0);
         }
