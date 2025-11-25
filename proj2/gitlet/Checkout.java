@@ -159,4 +159,8 @@ public class Checkout {
         }
         return false;
     }
+
+    public static String getCheckPrefix(String commitID) {
+        return checkPrefix(commitID);
+    }
 }
