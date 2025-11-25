@@ -37,8 +37,25 @@ public class Checkout {
         }
         Commit inBranch = Commit.getCommit(readContentsAsString(branch));
         checkTrack(inBranch);
-        HashMap<String, String> blobs = inBranch.getFileNameToBLOB();
-        // Import all the file in Branch.
+        importFile(inBranch);
+        removeFile(inBranch);
+        writeContents(Branch.HEAD, branchName);
+    }
+
+    /** Remove all the tracked files but not tracked in commit. */
+    private static void removeFile(Commit commit) {
+        HashMap<String, String> blobs = commit.getFileNameToBLOB();
+        for (String fileName : plainFilenamesIn(Repository.CWD)) {
+            File fileInCWD = join(Repository.CWD, fileName);
+            if (!blobs.keySet().contains(fileInCWD)) {
+                fileInCWD.delete();
+            }
+        }
+    }
+
+    /** Import all the file in commit. */
+    private static void importFile(Commit commit) {
+        HashMap<String, String> blobs = commit.getFileNameToBLOB();
         for (String fileName : blobs.keySet()) {
             File fileInCWD = join(Repository.CWD, fileName);
             File fileInBlob = join(Blob.BLOB_FOLDER, blobs.get(fileName));
@@ -53,14 +70,6 @@ public class Checkout {
                 }
             }
         }
-        // Remove all the tracked files but not tracked in Branch.
-        for (String fileName : plainFilenamesIn(Repository.CWD)) {
-            File fileInCWD = join(Repository.CWD, fileName);
-            if (!blobs.keySet().contains(fileInCWD)) {
-                fileInCWD.delete();
-            }
-        }
-        writeContents(Branch.HEAD, branchName);
     }
 
     public static void checkTrack(Commit inBranch) {
