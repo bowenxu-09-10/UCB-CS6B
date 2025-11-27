@@ -205,11 +205,26 @@ public class Commit implements Serializable {
         return null;
     }
 
-    /** Determine whether the given branch is the ancestor of current. */
-    public static void ancestorCheck(String branchName) {
+    /** Determine whether the given branch is the ancestor of current.
+     *  Return 'branchIsAncestor' if the given branch is ancestor.
+     *  Return 'headIsAncestor' if current head is ancestor.
+     *  Return 'neitherIsAncestor' if neither is ancestor. */
+    public static String ancestorCheck(String branchName) {
         File branch  = join(Branch.BRANCH_DIR, branchName);
         String branchID = readContentsAsString(branch);
         Commit inBranch = getCommit(branchID);
-        // Todo: if inBranch is the split point.
+        Commit head = getHeadCommit();
+        // If branch is ancestor.
+        String split = findSplitCommit(branchName);
+        if (split.equals(branchID)) {
+            System.out.println("Given branch is an ancestor of the current branch.");
+            return "branchIsAncestor";
+        }
+
+        // If current head is ancestor of given branch.
+        if (split.equals(head.pid)) {
+            return "headIsAncestor";
+        }
+        return "neitherIsAncestor";
     }
 }
