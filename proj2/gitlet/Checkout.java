@@ -7,6 +7,7 @@ import java.util.HashMap;
 import static gitlet.Utils.*;
 
 public class Checkout {
+    /** Checkout file in the head. More details see getCheckOutFile. */
     private static void checkoutFile(String[] args) {
         if (!checkCommendFormat(args)) {
             System.exit(0);
@@ -25,6 +26,7 @@ public class Checkout {
         writeContents(file, content);
     }
 
+    /** Checkout branch. More details see getCheckOutBranch.*/
     private static void checkoutBranch(String branchName) {
         File branch = join(Branch.BRANCH_DIR, branchName);
         if (!branch.exists()) {
@@ -42,6 +44,7 @@ public class Checkout {
         writeContents(Branch.HEAD, branchName);
     }
 
+    /** Check is there any other file in CWD that is not tracked in given branch. */
     public static void checkTrack(Commit inBranch) {
         for (String fileName : plainFilenamesIn(Repository.CWD)) {
             File file = join(Repository.CWD, fileName);
@@ -53,6 +56,7 @@ public class Checkout {
         }
     }
 
+    /** Checkout a given commit. More details see getCheckoutCommit. */
     private static void checkoutCommit(String[] args) {
         String commitID = checkPrefix(args[1]);
         // Check is the commend legal.
