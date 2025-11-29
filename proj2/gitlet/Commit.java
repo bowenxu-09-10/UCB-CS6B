@@ -52,13 +52,13 @@ public class Commit implements Serializable {
     /**
      * The file current commit tracked.
      */
-    private HashMap<String, String> fileNameToBLOB;
+    public HashMap<String, String> fileNameToBLOB;
 
     Commit(String message, String parent, String secondParent) {
         this.message = message;
         this.parent = parent;
         this.secondParent = secondParent;
-        this.fileNameToBLOB = new HashMap<>(getParent().getFileNameToBLOB());
+        this.fileNameToBLOB = new HashMap<>(getParent().fileNameToBLOB);
     }
 
     /**
@@ -168,13 +168,6 @@ public class Commit implements Serializable {
     }
 
     /**
-     * Get fileNameToBlob.
-     */
-    public HashMap<String, String> getFileNameToBLOB() {
-        return fileNameToBLOB;
-    }
-
-    /**
      * Get commit id.
      */
     public String getPid() {
@@ -192,7 +185,7 @@ public class Commit implements Serializable {
      * Remove all the tracked files but not tracked in commit.
      */
     public static void removeFile(Commit commit) {
-        HashMap<String, String> blobs = commit.getFileNameToBLOB();
+        HashMap<String, String> blobs = commit.fileNameToBLOB;
         for (String fileName : plainFilenamesIn(Repository.CWD)) {
             File fileInCWD = join(Repository.CWD, fileName);
             if (!blobs.keySet().contains(fileInCWD)) {
@@ -205,7 +198,7 @@ public class Commit implements Serializable {
      * Import all the file in commit.
      */
     public static void importFile(Commit commit) {
-        HashMap<String, String> blobs = commit.getFileNameToBLOB();
+        HashMap<String, String> blobs = commit.fileNameToBLOB;
         for (String fileName : blobs.keySet()) {
             File fileInCWD = join(Repository.CWD, fileName);
             File fileInBlob = join(Blob.BLOB_FOLDER, blobs.get(fileName));

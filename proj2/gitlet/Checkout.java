@@ -14,11 +14,11 @@ public class Checkout {
         }
         Commit head = Commit.getHeadCommit();
         String fileName = args[2];
-        if (!head.getFileNameToBLOB().containsKey(fileName)) {
+        if (!head.fileNameToBLOB.containsKey(fileName)) {
             System.out.println("File does not exist in that commit.");
             System.exit(0);
         }
-        HashMap<String, String> blobs = head.getFileNameToBLOB();
+        HashMap<String, String> blobs = head.fileNameToBLOB;
         File file = join(Repository.CWD, fileName);
         String blob = blobs.get(fileName);
         File replaceFile = join(Blob.BLOB_FOLDER, blob);
@@ -49,8 +49,8 @@ public class Checkout {
         Commit head = Commit.getHeadCommit();
         for (String fileName : plainFilenamesIn(Repository.CWD)) {
             File file = join(Repository.CWD, fileName);
-            if (!head.getFileNameToBLOB().containsKey(fileName) &&
-                !sha1(readContents(file) + fileName).equals(inBranch.getFileNameToBLOB().get(fileName))) {
+            if (!head.fileNameToBLOB.containsKey(fileName) &&
+                !sha1(readContents(file) + fileName).equals(inBranch.fileNameToBLOB.get(fileName))) {
                 System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
                 System.exit(0);
             }
@@ -67,7 +67,7 @@ public class Checkout {
         File commitFile = Utils.join(Commit.COMMIT_DIR, commitID);
         Commit commit = readObject(commitFile, Commit.class);
         String fileName = args[3];
-        HashMap<String, String> blobs = commit.getFileNameToBLOB();
+        HashMap<String, String> blobs = commit.fileNameToBLOB;
         if (!blobs.containsKey(fileName)) {
             System.out.println("File does not exist in that commit.");
         }
@@ -107,7 +107,7 @@ public class Checkout {
 
     /** Checkout fileName from the given commit, write into CWD, and stage it. */
     public static void checkoutAndStage(String fileName, Commit fromCommit, Stage stage) {
-        String blobID = fromCommit.getFileNameToBLOB().get(fileName);
+        String blobID = fromCommit.fileNameToBLOB.get(fileName);
         File blobFile = join(Blob.BLOB_FOLDER, blobID);
         byte[] content = readContents(blobFile);
 
