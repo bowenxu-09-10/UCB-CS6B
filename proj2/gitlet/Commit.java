@@ -322,6 +322,19 @@ public class Commit implements Serializable {
             }
         }
     }
+
+    /** Rule6: If given branch delete one file, you didn't, delete it. */
+    private static void applyRule6(Commit head, Commit split, Commit given, Stage stage) {
+        for (String fileName : head.fileNameToBLOB.keySet()) {
+
+            boolean notInBranch = !given.fileNameToBLOB.containsKey(fileName);
+            boolean inSpilt = split.fileNameToBLOB.containsKey(fileName);
+
+            if (notInBranch && inSpilt) {
+                join(Repository.CWD, fileName).delete();
+            }
+        }
+    }
 }
 
 
