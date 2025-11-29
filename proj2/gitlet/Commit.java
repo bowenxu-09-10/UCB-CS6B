@@ -291,7 +291,8 @@ public class Commit implements Serializable {
         Commit head = getHeadCommit();
 
         Stage stage = Stage.load();
-
+        applyRule1(head, split, branch, stage);
+        applyRule4(head, split, branch, stage);
 
         Stage.saveStage(stage);
     }
@@ -328,7 +329,6 @@ public class Commit implements Serializable {
             }
         }
     }
-
 }
 
 
