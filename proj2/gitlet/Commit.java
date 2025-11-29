@@ -315,6 +315,20 @@ public class Commit implements Serializable {
         }
     }
 
+    /** Rule4: If given branch add new file, but head didn't, stage it. */
+    private static void applyRule4(Commit head, Commit split, Commit given, Stage stage) {
+        for (String fileName : given.fileNameToBLOB.keySet()) {
+
+            boolean notInHead = !head.fileNameToBLOB.containsKey(fileName);
+            boolean notInSplit = !split.fileNameToBLOB.containsKey(fileName);
+
+            // given branch added this file
+            if (notInHead && notInSplit) {
+                Checkout.checkoutAndStage(fileName, given, stage);
+            }
+        }
+    }
+
 }
 
 
