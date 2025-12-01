@@ -65,6 +65,10 @@ public class Repository {
         operandsCheck(args, 2);
         checkFolderGitleted();
         Stage stage = Stage.load();
+        if (args[1].equals("")) {
+            System.out.println("Please enter a commit message.");
+            System.exit(0);
+        }
         if (stage.getStagedAddition().isEmpty() && stage.getStagedRemoval().isEmpty()) {
             System.out.println("No changes added to the commit.");
             return;
