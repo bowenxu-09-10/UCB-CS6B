@@ -3,6 +3,7 @@ package gitlet;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static gitlet.Utils.*;
@@ -42,7 +43,7 @@ public class Commit implements Serializable {
     /** Initial commit. */
     Commit() {
         this.message = "initial commit";
-        this.timeStamp = new Date(0);
+        this.timeStamp = new Date();
         this.parent = null;
         this.secondParent = null;
         this.fileNameToBLOB = new HashMap<>();
@@ -115,7 +116,7 @@ public class Commit implements Serializable {
     /** Save commit into a file to make persistence. */
     public void saveCommit() {
         if (timeStamp == null) {
-            this.timeStamp = new Date();
+            timeStamp = new Date();
         }
         setPid();
         File commit = join(COMMIT_DIR, getPid());
@@ -126,11 +127,6 @@ public class Commit implements Serializable {
         }
         writeObject(commit, this);
         Stage.clear();
-    }
-
-    /** Get timestamp. */
-    public Date getTimeStamp() {
-        return timeStamp;
     }
 
     /** Get message. */
@@ -348,5 +344,10 @@ public class Commit implements Serializable {
                 }
             }
         }
+    }
+
+    public String getGitTime() {
+        SimpleDateFormat gitFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy Z");
+        return gitFormat.format(this.timeStamp);
     }
 }

@@ -120,7 +120,7 @@ public class Repository {
                         curr.getSecondParent().substring(7);
                 System.out.println(merge);
             }
-            System.out.println("Date: " + curr.getTimeStamp());
+            System.out.println("Date: " + curr.getGitTime());
             System.out.println(curr.getMessage());
             if (curr.getSecondParent() == null) {
                 System.out.println();
@@ -138,7 +138,7 @@ public class Repository {
             Commit curr = readObject(file, Commit.class);
             System.out.println("===");
             System.out.println("commit " + curr.getPid());
-            System.out.println("Date: " + curr.getTimeStamp());
+            System.out.println("Date: " + curr.getGitTime());
             System.out.println(curr.getMessage());
             System.out.println();
         }
