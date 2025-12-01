@@ -112,18 +112,20 @@ public class Stage implements Serializable {
         SortedSet<String> addedFileName = new TreeSet<>(stagedAddition.keySet());
         if (addedFileName.size() == 0) {
             System.out.println();
-        }
-        for (String file : addedFileName) {
-            System.out.println(file);
+        } else {
+            for (String file : addedFileName) {
+                System.out.println(file);
+            }
             System.out.println();
         }
         System.out.println("=== Removed Files ===");
         SortedSet<String> removedFileName = new TreeSet<>(stagedRemoval);
         if (removedFileName.size() == 0) {
             System.out.println();
-        }
-        for (String file : removedFileName) {
-            System.out.println(file);
+        } else {
+            for (String file : removedFileName) {
+                System.out.println(file);
+            }
             System.out.println();
         }
         System.out.println("=== Modifications Not Staged For Commit ===");
