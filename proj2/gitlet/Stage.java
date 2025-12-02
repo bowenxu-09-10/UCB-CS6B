@@ -55,6 +55,7 @@ public class Stage implements Serializable {
         // If added one is the same as commited, remove it from stagedAddition
         if (checkSameFile(fileName)) {
             stagedAddition.remove(fileName);
+            saveStage(this);
             return;
         }
         this.stagedAddition.put(fileName, blobId);
