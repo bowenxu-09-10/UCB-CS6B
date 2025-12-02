@@ -69,6 +69,7 @@ public class Checkout {
         HashMap<String, String> blobs = commit.fileNameToBLOB;
         if (!blobs.containsKey(fileName)) {
             System.out.println("File does not exist in that commit.");
+            System.exit(0);
         }
         File file = join(Repository.CWD, fileName);
         File replaceFile = join(Blob.BLOB_FOLDER, blobs.get(fileName));
