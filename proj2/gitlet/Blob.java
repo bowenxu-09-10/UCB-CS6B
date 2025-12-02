@@ -15,12 +15,21 @@ public class Blob {
     /** File name. */
     private final String name;
 
+    /** Blob id. */
+    private final String id;
+
     /** Constructor. */
     Blob(String fileName) {
         File file = join(Repository.CWD, fileName);
         String content = readContentsAsString(file);
         this.contents = content;
         this.name = fileName;
+        this.id = sha1(contents + name);
+    }
+
+    /** Get blob id. */
+    public String getId() {
+        return id;
     }
 
     /** Save contents in a file named by sha-1, ana return its pid.*/
