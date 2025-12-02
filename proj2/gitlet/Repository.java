@@ -227,7 +227,7 @@ public class Repository {
         operandsCheck(args, 2);
         String id = Checkout.getCheckPrefix(args[1]);
         Commit commit = Commit.getCommit(id);
-        Checkout.checkTrack(Commit.getHeadCommit());
+        Checkout.checkTrack(commit);
         Commit.importFile(commit);
         Commit.removeFile(commit);
         String branchName = Branch.readHead();
