@@ -27,22 +27,22 @@ public class Stage implements Serializable {
     }
 
     /** Save file as blob file, and return its pid. */
-    private String saveFile(String fileName) {
+    private void saveFile(String fileName) {
         // Read contents in file and make a blob.
         Blob blob = new Blob(fileName);
-        return blob.saveBlob();
+        blob.saveBlob();
     }
 
     /** Check if current file added is the same as commited.
      *  True for is the same as committed. */
-    private boolean checkSameCommit(String fileName) {
+    private boolean checkSameFile(String fileName) {
         Commit head = Commit.getHeadCommit();
         if (head.fileNameToBLOB == null) {
             return false;
         }
         HashMap<String, String> fileTracked = head.fileNameToBLOB;
-        String id = saveFile(fileName);
-        return fileTracked.containsValue(id);
+        Blob blob = new Blob(fileName);
+        return fileTracked.containsValue(blob.getId());
     }
 
     /** Add file to staging area. If added one is the same as commited, but in staged area,
@@ -50,13 +50,12 @@ public class Stage implements Serializable {
     public void addStage(String fileName) {
         // If file added is staged for removal, then remove it from remove staging area.
         stagedRemoval.remove(fileName);
-        String blobId = saveFile(fileName);
+        Blob blob = new Blob(fileName);
+        String blobId = blob.getId();
         // If added one is the same as commited, remove it from stagedAddition
-        if (checkSameCommit(fileName)) {
-            if (stagedAddition.containsValue(saveFile(fileName))) {
-                stagedAddition.remove(fileName);
-                return;
-            }
+        if (checkSameFile(fileName)) {
+            stagedAddition.remove(fileName);
+            return;
         }
         this.stagedAddition.put(fileName, blobId);
         saveStage(this);
