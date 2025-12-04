@@ -199,6 +199,29 @@ public class Commit implements Serializable {
         return null;
     }
 
+    /** Get all ancestor of given commit. */
+    private static Set<String> getAllAncestor(Commit given) {
+        Queue<String> queue = new ArrayDeque<>();
+        Set<String> visited = new HashSet<>();
+        queue.add(given.pid);
+
+        while (!queue.isEmpty()) {
+            String id = queue.poll();
+            if (visited.contains(id)) {continue;}
+            visited.add(id);
+
+            Commit curr = getCommit(id);
+            if (curr.parent != null && !visited.contains(curr.parent)) {
+                queue.add(curr.parent);
+            }
+
+            if (curr.secondParent != null && !visited.contains(curr.secondParent)) {
+                queue.add(curr.secondParent);
+            }
+        }
+        return visited;
+    }
+
     /**
      * Determine whether the given branch is the ancestor of current.
      * Return true if the given branch is ancestor or the opposite.
