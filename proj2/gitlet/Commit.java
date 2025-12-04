@@ -360,8 +360,10 @@ public class Commit implements Serializable {
             String headContent = inHead ? readContentsAsString(join(Blob.BLOB_FOLDER, headBlob)) : null;
             String givenContent = inGiven ? readContentsAsString(join(Blob.BLOB_FOLDER, givenBlob)) : null;
 
-            // If both head and branch have file with same name but different content, collision.
-            if (inHead && inGiven) {
+            // If both head and branch have modified or add same file with same name
+            // but different content, collision.
+            if (inHead && inGiven
+                    && (!headContent.equals(splitContent) || !givenContent.equals(splitContent))) {
                 if (!headContent.equals(givenContent)) {
                     String merged = "<<<<<<< HEAD\n" + headContent + "=======\n" + givenContent + ">>>>>>>\n";
                     Utils.writeContents(join(Repository.CWD, fileName), merged);
