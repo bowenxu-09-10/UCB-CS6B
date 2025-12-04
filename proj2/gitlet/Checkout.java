@@ -1,7 +1,6 @@
 package gitlet;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 import static gitlet.Utils.*;
@@ -52,9 +51,11 @@ public class Checkout {
             File file = join(Repository.CWD, fileName);
             boolean trackedInHead = head.fileNameToBLOB.containsKey(fileName);
             boolean trackedGiven = given.fileNameToBLOB.containsKey(fileName);
-            boolean sameAsGiven = sha1(readContents(file) + fileName).equals(given.fileNameToBLOB.get(fileName));
+            boolean sameAsGiven = sha1(readContents(file) + fileName)
+                    .equals(given.fileNameToBLOB.get(fileName));
             if (!trackedInHead && trackedGiven && !sameAsGiven) {
-                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way;"
+                        + "delete it, or add and commit it first.");
                 System.exit(0);
             }
         }
@@ -90,7 +91,7 @@ public class Checkout {
         for (String commit : plainFilenamesIn(Commit.COMMIT_DIR)) {
             if (commit.equals(prefix)) {
                 return commit;
-            } else if (commit.startsWith(prefix)){
+            } else if (commit.startsWith(prefix)) {
                 target = commit;
                 count++;
             }

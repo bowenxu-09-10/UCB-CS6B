@@ -216,7 +216,9 @@ public class Commit implements Serializable {
 
         while (!queue.isEmpty()) {
             String id = queue.poll();
-            if (visited.contains(id)) {continue;}
+            if (visited.contains(id)) {
+                continue;
+            }
             visited.add(id);
 
             Commit curr = getCommit(id);
@@ -291,13 +293,11 @@ public class Commit implements Serializable {
     private static void modifiedInGiven(Commit head, Commit split, Commit given, Stage stage) {
         for (String fileName : split.fileNameToBLOB.keySet()) {
 
-            boolean headSameAsSplit =
-                    head.fileNameToBLOB.containsKey(fileName) &&
-                            head.fileNameToBLOB.get(fileName).equals(split.fileNameToBLOB.get(fileName));
+            boolean headSameAsSplit =  head.fileNameToBLOB.containsKey(fileName)
+                            && head.fileNameToBLOB.get(fileName).equals(split.fileNameToBLOB.get(fileName));
 
-            boolean givenDiffFromSplit =
-                    given.fileNameToBLOB.containsKey(fileName) &&
-                            !given.fileNameToBLOB.get(fileName).equals(split.fileNameToBLOB.get(fileName));
+            boolean givenDiffFromSplit = given.fileNameToBLOB.containsKey(fileName)
+                            && !given.fileNameToBLOB.get(fileName).equals(split.fileNameToBLOB.get(fileName));
 
             if (headSameAsSplit && givenDiffFromSplit) {
                 // take given version
@@ -394,7 +394,9 @@ public class Commit implements Serializable {
                 }
             }
         }
-        if (conflict) {System.out.println("Encountered a merge conflict.");}
+        if (conflict) {
+            System.out.println("Encountered a merge conflict.");
+        }
     }
 
     public String getGitTime() {

@@ -45,7 +45,8 @@ public class Repository {
     public static void initCommend(String[] args) {
         operandsCheck(args, 1);
         if (GITLET_DIR.exists()) {
-            System.out.println("A Gitlet version-control system already exists in the current directory.");
+            System.out.println("A Gitlet version-control system "
+                    + "already exists in the current directory.");
             System.exit(0);
         }
         setUpPersistence();
@@ -120,8 +121,8 @@ public class Repository {
             System.out.println("===");
             System.out.println("commit " + curr.getPid());
             if (curr.getSecondParent() != null) {
-                String merge = "Merge: " + curr.getParentID().substring(0, 7) + " " +
-                        curr.getSecondParent().substring(0, 7);
+                String merge = "Merge: " + curr.getParentID().substring(0, 7) + " "
+                        + curr.getSecondParent().substring(0, 7);
                 System.out.println(merge);
             }
             System.out.println("Date: " + curr.getGitTime());
@@ -198,7 +199,7 @@ public class Repository {
             Checkout.getCheckoutFile(args);
         } else if (args.length == 2) {
             Checkout.getCheckoutBranch(args[1]);
-        }else if (args.length == 4) {
+        } else if (args.length == 4) {
             Checkout.getCheckoutCommit(args);
         } else {
             System.out.println("Incorrect operands.");
@@ -278,7 +279,7 @@ public class Repository {
 
     /** Operands check.
      * If only one or more than two operands, then issue. */
-    private static void operandsCheck(String args[], int num) {
+    private static void operandsCheck(String[] args, int num) {
         if (args.length != num) {
             System.out.println("Incorrect operands.");
             System.exit(0);
