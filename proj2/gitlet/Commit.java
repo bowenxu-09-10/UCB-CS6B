@@ -319,7 +319,7 @@ public class Commit implements Serializable {
         }
     }
 
-    /** Rule6: If given branch delete one file, you didn't modify and delete the file, delete it. */
+    /** Rule6: If given branch delete one file, you didn't modify or delete the file, delete it. */
     private static void absentFileInGiven(Commit head, Commit split, Commit given, Stage stage) {
         for (String fileName : head.fileNameToBLOB.keySet()) {
             boolean notInBranch = !given.fileNameToBLOB.containsKey(fileName);
@@ -328,10 +328,10 @@ public class Commit implements Serializable {
             String spiltBlob = inSpilt ? split.fileNameToBLOB.get(fileName) : null;
             String headBlob = head.fileNameToBLOB.get(fileName);
 
-                String inHeadContent = readContentsAsString(join(Blob.BLOB_FOLDER, headBlob));
+            String inHeadContent = readContentsAsString(join(Blob.BLOB_FOLDER, headBlob));
             String inSplitContent = inSpilt ? readContentsAsString(join(Blob.BLOB_FOLDER, spiltBlob)) : null;
 
-            if (notInBranch && inSpilt && !inSplitContent.equals(inHeadContent)) {
+            if (notInBranch && inSpilt && inSplitContent.equals(inHeadContent)) {
                 stage.removeStage(fileName);
             }
         }
