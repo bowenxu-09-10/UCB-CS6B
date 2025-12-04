@@ -240,13 +240,14 @@ public class Repository {
     public static void mergeCommend(String[] args) {
         checkFolderGitleted();
         operandsCheck(args, 2);
-        precheckMerge(args[1]);
-        Commit.ancestorCheck(args[1]);
+        String branchName = args[1];
+        precheckMerge(branchName);
+        Commit.ancestorCheck(branchName);
         String headID = Branch.getHeadBranch();
         File branch = join(Branch.BRANCH_DIR, args[1]);
         String branchID  = readContentsAsString(branch);
-        Commit newCommit = new Commit("Merged development into master.", headID, branchID);
-        Commit.mergeRule(args[1]);
+        Commit newCommit = new Commit("Merged " + branchName + "into " + Branch.readHead(), headID, branchID);
+        Commit.mergeRule(branchName);
         newCommit.makeCommit();
         newCommit.saveCommit();
         Branch.writeBranch(newCommit.getPid());
