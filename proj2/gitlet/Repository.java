@@ -246,7 +246,8 @@ public class Repository {
         String headID = Branch.getHeadBranch();
         File branch = join(Branch.BRANCH_DIR, args[1]);
         String branchID  = readContentsAsString(branch);
-        Commit newCommit = new Commit("Merged " + branchName + "into " + Branch.readHead(), headID, branchID);
+        Commit newCommit = new Commit("Merged " + branchName + " into "
+                + Branch.readHead() + ".", headID, branchID);
         Commit.mergeRule(branchName);
         newCommit.makeCommit();
         newCommit.saveCommit();
