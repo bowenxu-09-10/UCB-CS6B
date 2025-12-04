@@ -306,6 +306,7 @@ public class Commit implements Serializable {
             boolean inSplit = split.fileNameToBLOB.containsKey(fileName);
             boolean inHead = head.fileNameToBLOB.containsKey(fileName);
             boolean inGiven = given.fileNameToBLOB.containsKey(fileName);
+            boolean conflict = false;
 
             String splitBlob = inSplit ? split.fileNameToBLOB.get(fileName) : null;
             String headBlob = inHead ? head.fileNameToBLOB.get(fileName) : null;
@@ -321,6 +322,7 @@ public class Commit implements Serializable {
                     String merged = "<<<<<<< HEAD\n" + headContent + "\n=======\n" + givenContent + "\n>>>>>>>";
                     Utils.writeContents(join(Repository.CWD, fileName), merged);
                     stage.addStage(fileName);
+                    conflict = true;
                     continue;
                 }
             }
@@ -331,6 +333,7 @@ public class Commit implements Serializable {
                     String merged = "<<<<<<< HEAD\n" + headContent + "\n=======\n\n>>>>>>>";
                     Utils.writeContents(Utils.join(Repository.CWD, fileName), merged);
                     stage.addStage(fileName);
+                    conflict = true;
                     continue;
                 }
             }
@@ -341,8 +344,10 @@ public class Commit implements Serializable {
                     String merged = "<<<<<<< HEAD\n\n=======\n" + givenContent + "\n>>>>>>>";
                     Utils.writeContents(Utils.join(Repository.CWD, fileName), merged);
                     stage.addStage(fileName);
+                    conflict = true;
                 }
             }
+            if (conflict) {System.out.println("Encountered a merge conflict.");}
         }
     }
 
