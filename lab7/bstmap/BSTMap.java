@@ -63,8 +63,14 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        // Todo
-        throw new UnsupportedOperationException();
+        if (root == null) {
+            return null;
+        }
+        BSTNode target = root.get(root, key);
+        if (target == null) {
+            return null;
+        }
+        return target.val;
     }
 
     /** Returns the number of key-value mappings in this map. */
