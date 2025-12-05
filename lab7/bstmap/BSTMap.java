@@ -82,8 +82,33 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     /** Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        // Todo
-        throw new UnsupportedOperationException();
+        put(root, key, value);
+        size++;
+    }
+
+    private void put(BSTNode node, K key, V value) {
+        if (root == null) {
+            root = new BSTNode(key, value);
+        } else {
+            int cmp = key.compareTo(node.key);
+            if (cmp > 0) {
+                if (node.right == null) {
+                    BSTNode newNode = new BSTNode(key, value);
+                    node.right = newNode;
+                } else {
+                    put(node.right, key, value);
+                }
+            } else if (cmp < 0) {
+                if (node.left == null) {
+                    BSTNode newNode = new BSTNode(key, value);
+                    node.left = newNode;
+                } else {
+                    put(node.left, key, value);
+                }
+            } else {
+                node.val = value;
+            }
+        }
     }
 
     /** Prints out BSTMap in order of increasing Key. */
