@@ -3,9 +3,45 @@ package bstmap;
 import java.util.Iterator;
 import java.util.Set;
 
-public class BSTMap<K, V> implements Map61B<K, V> {
+public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     int size = 0;
+
+    /** Root of the BST. */
+    private BSTNode root;
+
+    /** Represents one node in the Binary Search Tree that stores the key-value
+     *  pairs in the dictionary. */
+    public class BSTNode {
+
+        /** Stores the key of the key-value pair of this node in BSTMap. */
+        K key;
+        /** Stores the value of the key-value pair of this node in BSTMap. */
+        V val;
+        /** Stores the left node of the BSTNode. */
+        BSTMap.BSTNode left;
+        /** Stores the right node of the BSTNode. */
+        BSTMap.BSTNode right;
+
+        /** Stores KEY as the key in this key-value pair, VAL as the value, and
+         *  NEXT as the next node in the linked list. */
+        BSTNode(K k, V v) {
+            key = k;
+            val = v;
+        }
+
+        /** Return the BSTNode in this BSTMap of key-value pairs whose key is
+         * equal to KEY, or null if no such key exists. */
+        BSTNode get(BSTNode node, K k) {
+            if (k == null)    return null;
+            if (node == null) return null;
+            int cmp = k.compareTo(node.key);
+            if      (cmp > 0) return get(node.right, k);
+            else if (cmp < 0) return get(node.left, k);
+            else              return this;
+        }
+    }
+
 
     /** Removes all of the mappings from this map. */
     @Override
