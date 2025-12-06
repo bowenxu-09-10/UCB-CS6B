@@ -1,7 +1,6 @@
 package bstmap;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
@@ -29,19 +28,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             key = k;
             val = v;
         }
-
-        /** Return the BSTNode in this BSTMap of key-value pairs whose key is
-         * equal to KEY, or null if no such key exists. */
-        BSTNode get(BSTNode node, K k) {
-            if (k == null)    return null;
-            if (node == null) return null;
-            int cmp = k.compareTo(node.key);
-            if      (cmp > 0) return get(node.right, k);
-            else if (cmp < 0) return get(node.left, k);
-            else              return this;
-        }
     }
-
 
     /** Removes all of the mappings from this map. */
     @Override
@@ -66,11 +53,22 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (root == null) {
             return null;
         }
-        BSTNode target = root.get(root, key);
+        BSTNode target = get(root, key);
         if (target == null) {
             return null;
         }
         return target.val;
+    }
+
+    /** Return the BSTNode in this BSTMap of key-value pairs whose key is
+     * equal to KEY, or null if no such key exists. */
+    private BSTNode get(BSTNode node, K k) {
+        if (k == null)    return null;
+        if (node == null) return null;
+        int cmp = k.compareTo(node.key);
+        if      (cmp > 0) return get(node.right, k);
+        else if (cmp < 0) return get(node.left, k);
+        else              return node;
     }
 
     /** Returns the number of key-value mappings in this map. */
@@ -113,8 +111,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     /** Prints out BSTMap in order of increasing Key. */
     public void printInOrder() {
-        // Todo
-        throw new UnsupportedOperationException();
     }
 
 
