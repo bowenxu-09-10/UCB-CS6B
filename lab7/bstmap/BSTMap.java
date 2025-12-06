@@ -4,14 +4,14 @@ import java.util.*;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
-    int size = 0;
+    private int size = 0;
 
     /** Root of the BST. */
     private BSTNode root;
 
     /** Represents one node in the Binary Search Tree that stores the key-value
      *  pairs in the dictionary. */
-    public class BSTNode {
+    private class BSTNode {
 
         /** Stores the key of the key-value pair of this node in BSTMap. */
         K key;
