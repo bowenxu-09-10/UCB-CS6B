@@ -42,6 +42,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     @Override
     public boolean containsKey(K key) {
         if (root == null) return false;
+        if (key == null)  return false;
         return get(key) != null;
     }
 
